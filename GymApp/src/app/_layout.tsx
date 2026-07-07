@@ -1,15 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { useColorScheme } from 'react-native';
+import { Archivo_400Regular, Archivo_700Bold, useFonts } from "@expo-google-fonts/archivo";
+import { BarlowCondensed_700Bold, BarlowCondensed_800ExtraBold } from "@expo-google-fonts/barlow-condensed";
+import { Stack } from "expo-router";
+const RootLayout = () =>{
+    const [loaded] = useFonts({
+        Archivo_400Regular,
+        Archivo_700Bold,
+        BarlowCondensed_700Bold,
+        BarlowCondensed_800ExtraBold,
+    });
+    if (!loaded) return null;
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
-  );
+    return (
+        <Stack screenOptions={{headerShown:false}}></Stack>
+   ) 
 }
+
+export default RootLayout
