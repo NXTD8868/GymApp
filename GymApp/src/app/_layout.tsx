@@ -9,7 +9,6 @@ const RootLayout = () =>{
         BarlowCondensed_800ExtraBold,
     });
     if (!loaded) return null;
-
     return (
         <Stack screenOptions={{headerShown:false}}></Stack>
    ) 

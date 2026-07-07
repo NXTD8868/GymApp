@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-export default function Index() {
+export default function SignInPage() {
   const [username,setUsername]= useState('')
   const [email,setEmail]= useState('')
   const [password,setPassword] =useState('')
