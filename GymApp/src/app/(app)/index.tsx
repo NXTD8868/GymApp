@@ -1,3 +1,4 @@
+import APITestingButton from '@/components/api-testing-button';
 import { authClient } from '@/lib/auth-client';
 import { Text, View } from 'react-native';
 const Index = () => {
@@ -10,7 +11,7 @@ const Index = () => {
 
   return (
     <View>
-
+        <APITestingButton APIfunc={()=>onLogOut()}></APITestingButton>
     </View>
   )
 }
