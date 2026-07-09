@@ -2,21 +2,47 @@ import { Card } from '@/components/card';
 import { LogoBadge } from '@/components/logobadge';
 import { OrangeHue } from '@/components/orangehue';
 import { colors, fonts, spacing } from '@/constants/theme';
+import { authClient } from '@/lib/auth-client';
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
-
 export default function SignInPage() {
-  const [username,setUsername]= useState('')
+  const [name,setname]= useState('')
   const [email,setEmail]= useState('')
   const [password,setPassword] =useState('')
   const [isSignIn, setIsSignIn] = useState(true);
-  const onSignIn =():void =>{
+  const onSignIn = async():Promise<void> =>{
+    console.log('signin',email,password)
+    const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe: false
+      },{
+        onError: (ctx) => {
+          console.log(ctx.error.message);
+        },
+        onSuccess: (ctx) => {
+          console.log("sucess");
+        },
+      })
+
+
     console.log('sign in',email,password);
   }
-  const onSignUp =():void =>{
-    console.log('sign up',email,password,username);
+  const onSignUp = async():Promise<void> =>{
+    console.log('sign up:',email,password,name);
+    const { data, error } = await authClient.signUp.email({
+            email, // user email address
+            password, // user password -> min 8 characters by default
+            name, // user display name
+        });
+        if (error) {
+          console.log('error')
+          return
+        }
+        console.log('success')
   }
+  
   const onForgotPassword =():void =>{
     console.log('forgot password');
   }
@@ -31,7 +57,6 @@ export default function SignInPage() {
         borderWidth: 2,
         borderColor: "rgba(255,90,31,0.18)",
       }} />
-
       {/* ring 2 — smaller, concentric-ish, slightly offset */}
       <View style={{
         position: "absolute",
@@ -44,11 +69,15 @@ export default function SignInPage() {
         <LogoBadge/>
         <Text style={{fontFamily:fonts.headingHeavy,fontSize:30,padding:spacing.md,color:colors.text}}>IRONLOG</Text>
       </View>
+
+
       <View style={{flex:2,justifyContent:'flex-start',padding:spacing.sm}}>
         <Text style={{fontFamily:fonts.headingHeavy,color:colors.text,fontSize:45}}>LIFT.</Text>
         <Text style={{fontFamily:fonts.headingHeavy,color:colors.text,fontSize:45}}>TRACK.</Text>
         <Text style={{fontFamily:fonts.headingHeavy,color:colors.accent,fontSize:45}}>REPEAT.</Text>
       </View>
+
+
       <View style={{flex:4,justifyContent:'flex-start',alignItems:'center',gap:spacing.sm}}>
         <Text style={{fontFamily:fonts.bodyBold,color:colors.textDim,fontSize:12,alignSelf:'center',padding:spacing.sm}}>
           {isSignIn? "Welcome back! Please sign in to continue": "Create your account - it's free"}
@@ -57,9 +86,9 @@ export default function SignInPage() {
         <Card style={{ width: "80%",flexDirection:'row',alignItems:'center',gap:spacing.sm}}>
           <Ionicons name='person-outline' size={20} color={colors.textMuted} />      
           <TextInput 
-            value={username}
-            onChangeText={setUsername}
-            placeholder='Username'
+            value={name}
+            onChangeText={setname}
+            placeholder='name'
             placeholderTextColor={colors.textMuted}
             style={{ flex: 1, fontFamily: fonts.body, color: colors.text, paddingVertical: spacing.sm }}>
           </TextInput>
