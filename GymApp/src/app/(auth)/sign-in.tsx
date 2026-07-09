@@ -4,6 +4,7 @@ import { OrangeHue } from '@/components/orangehue';
 import { colors, fonts, spacing } from '@/constants/theme';
 import { authClient } from '@/lib/auth-client';
 import { Ionicons } from "@expo/vector-icons";
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 export default function SignInPage() {
@@ -16,18 +17,17 @@ export default function SignInPage() {
     const { data, error } = await authClient.signIn.email({
         email,
         password,
-        rememberMe: false
+        rememberMe: false,
+        callbackURL: "/",
       },{
         onError: (ctx) => {
           console.log(ctx.error.message);
         },
         onSuccess: (ctx) => {
-          console.log("sucess");
+          console.log("success");
+          console.log(ctx.data)
         },
       })
-
-
-    console.log('sign in',email,password);
   }
   const onSignUp = async():Promise<void> =>{
     console.log('sign up:',email,password,name);
@@ -40,6 +40,8 @@ export default function SignInPage() {
           console.log('error')
           return
         }
+        console.log('asdfa')
+        router.replace("/");
         console.log('success')
   }
   
