@@ -1,5 +1,5 @@
 ## Feature
-
+### 1.workout logging
 Story: User can log exercises in each workout to track progress
 
 Acceptance:
@@ -13,3 +13,18 @@ Rules:
 - Each user have seperate workout list
 - Exercises have positive rep, weight
 - User can only edit, see their own workout (currently)
+
+### 2.workout History
+
+Story: User can view their previous workout sessions, and information on the exercise they did
+
+Acceptance:
+- User can scroll thorugh workout list
+- Sessions have date and duration, total volumne
+- Each session can be clicked on to see the list of exercises and their weight, rep
+- User can edit, update, delete the workout session
+
+Rules:
+- Total volumn is calculated using rep and weight of excercise
+- User can only edit, see their own workout (currently)
+
