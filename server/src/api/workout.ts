@@ -27,8 +27,13 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.get('/exercises', async (req: Request, res: Response) => {
-  const exercisesCatalog = await exercises.find({}).toArray()
-  console.log(exercises)
-  res.json({a:'sasss',res:exercisesCatalog})
+  try {
+    const exercisesCatalog = await exercises.find({}).toArray()
+    return res.status(201).json({exercises:exercisesCatalog})
+  }
+  catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Can not fetch exercises' });
+  }
 });
 export default router;
