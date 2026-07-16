@@ -7,7 +7,7 @@ Acceptance:
 - Each exercise has set and rep
 - Each workout session need to have its date and time recorded
 - Need to have a finish button to confirm saving the workout session
-- User can edit excersises value before finishing session
+- User can edit exersises value before finishing session
 
 Rules:
 - Each user have seperate workout list
@@ -25,6 +25,6 @@ Acceptance:
 - User can edit, update, delete the workout session
 
 Rules:
-- Total volumn is calculated using rep and weight of excercise
+- Total volumn is calculated using rep and weight of exercise
 - User can only edit, see their own workout (currently)
 

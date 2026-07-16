@@ -19,7 +19,7 @@ router.post('/', async (req: Request, res: Response) => {
       ...parsed.data,       
     });
 
-    return res.status(201).json({ id: result.insertedId });
+    return res.status(201).json({ res: result.insertedId });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to save workout' });
@@ -29,7 +29,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/exercises', async (req: Request, res: Response) => {
   try {
     const exercisesCatalog = await exercises.find({}).toArray()
-    return res.status(201).json({exercises:exercisesCatalog})
+    return res.status(200).json({res:exercisesCatalog})
   }
   catch (err) {
     console.error(err);
