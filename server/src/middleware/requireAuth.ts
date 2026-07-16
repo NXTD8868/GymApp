@@ -8,7 +8,7 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
     headers: fromNodeHeaders(req.headers),
   });
   if (!session) return res.status(401).json({ error: 'Unauthorized' });
-  req.user = session.user;
-  req.session = session.session;
+    req.user = session.user;
+    req.session = session.session;
   next();
 };

@@ -19,3 +19,12 @@ export type WorkoutDocument = WorkoutInput & {
 };
 export {workoutInputSchema}
 export type {WorkoutInput}
+
+export const ExerciseSchema = z.object({
+    key: z.string(),
+    exerciseName: z.string(),
+    muscleGroup: z.string()
+})
+
+type Exercise = z.infer<typeof ExerciseSchema>
+export type {Exercise}
