@@ -24,3 +24,7 @@ export const exerciseobject = z.object({
 
 type Exercise = z.infer<typeof exerciseobject>
 export type {Exercise}
+
+type DraftSet = { weight: string; reps: string }       
+type DraftExercise = { exercise: Exercise; sets: DraftSet[] }
+export type {DraftExercise,DraftSet}

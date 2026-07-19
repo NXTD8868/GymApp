@@ -4,7 +4,7 @@ const workoutInputSchema = z.object({
     startedAt: z.coerce.date(),
     endedAt: z.coerce.date(),
     exercises: z.array(z.object({
-        exerciseId: z.string(),
+        exerciseKey: z.string(),
         sets: z.array(z.object({
             weight: z.number().positive(),
             reps: z.number().positive()

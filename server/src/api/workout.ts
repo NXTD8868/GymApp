@@ -26,7 +26,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/exercises', async (req: Request, res: Response) => {
+router.get('/exercises', async (req: Request, res: Response) => { 
   try {
     const exercisesCatalog = await exercises.find({}).toArray()
     return res.status(200).json({res:exercisesCatalog})
