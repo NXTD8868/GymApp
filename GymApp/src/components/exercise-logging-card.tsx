@@ -6,8 +6,9 @@ import { DraftExercise, Exercise } from '@/types'
 import { Ionicons } from '@expo/vector-icons'
 import Index from '@/app/(app)'
 
-const ExerciseLoggingCard = ({exerciseList,onRemoveExercise,onAddSet,onUpdateSet}:{
+const ExerciseLoggingCard = ({exerciseList,onRemoveSet,onRemoveExercise,onAddSet,onUpdateSet}:{
   exerciseList:DraftExercise[]
+  onRemoveSet:  (exIndex:number,setIndex:number)=>void
   onRemoveExercise: (exIndex:number)=>void
   onAddSet:(exIndex:number)=>void
   onUpdateSet:(exIndex:number,setIndex:number,field :'weight'|'reps',value:string)=>void})=> {
@@ -27,15 +28,16 @@ const ExerciseLoggingCard = ({exerciseList,onRemoveExercise,onAddSet,onUpdateSet
             </View>
             <View style={{ flexDirection: 'row' ,gap:spacing.sm}}>
               <Text style={{ flex: 1, color: colors.textDim, fontFamily: fonts.body,textAlign:'center' }}>SET</Text>
-              <Text style={{ flex: 2, color: colors.textDim, fontFamily: fonts.body,textAlign:'center' }}>WEIGHT (KG)</Text>
-              <Text style={{ flex: 2, color: colors.textDim, fontFamily: fonts.body,textAlign:'center' }}>REPS</Text>
+              <Text style={{ flex: 3, color: colors.textDim, fontFamily: fonts.body,textAlign:'center' }}>WEIGHT (KG)</Text>
+              <Text style={{ flex: 3, color: colors.textDim, fontFamily: fonts.body,textAlign:'center' }}>REPS</Text>
+              <View style={{flex:1}}></View>
             </View>
             {item.sets.map((set,setIndex)=>(
               <View key={setIndex} style={{flexDirection:'row',gap:spacing.sm}}>
                 <Card padded={false} raised={true} style={{flex:1,alignItems:'center',height:32,justifyContent:'center'}}>
                   <Text style={{fontFamily:fonts.body,color:colors.text,fontSize:18}}>{setIndex+1}</Text>
                 </Card>
-                <Card padded={false} style={{backgroundColor:colors.background,flex:2}}>
+                <Card padded={false} style={{backgroundColor:colors.background,flex:3}}>
                   <TextInput
                   style={{textAlign:'center',flex:1,color:colors.text,height:32,fontSize:18}}
                   placeholder='0'
@@ -44,7 +46,7 @@ const ExerciseLoggingCard = ({exerciseList,onRemoveExercise,onAddSet,onUpdateSet
                   onChangeText={(v)=>onUpdateSet(index,setIndex,'weight',v)}
                   value={set.weight}></TextInput>
                 </Card>
-                <Card padded={false} style={{backgroundColor:colors.background,flex:2}}>
+                <Card padded={false} style={{backgroundColor:colors.background,flex:3}}>
                   <TextInput
                   style={{textAlign:'center',flex:1,color:colors.text,height:32,fontSize:18}}
                   placeholder='0'
@@ -52,6 +54,9 @@ const ExerciseLoggingCard = ({exerciseList,onRemoveExercise,onAddSet,onUpdateSet
                   placeholderTextColor={colors.textMuted}
                   onChangeText={(v)=>onUpdateSet(index,setIndex,'reps',v)}
                   value={set.reps}></TextInput>
+                </Card>
+                <Card padded={false} onPress={()=>onRemoveSet(index,setIndex)} style={{flex:1, alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <Ionicons name='close' color={colors.textMuted} size={20}></Ionicons>
                 </Card>
               </View>
             ))}

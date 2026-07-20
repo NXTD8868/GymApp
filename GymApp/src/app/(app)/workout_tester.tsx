@@ -18,6 +18,11 @@ const workout_tester = () => {
     setSessionExercises((prev)=>prev.map((ex,i)=>
       i===exIndex?{...ex,sets:[...ex.sets,{weight:'',reps:''}]}:ex))
   }
+  const removeSet =(exIndex:number,setIndex:number) =>{
+    setSessionExercises((prev)=>prev.map((ex,i)=>
+      i!==exIndex?ex:
+      {...ex,sets:ex.sets.filter((_,si)=>si !== setIndex)}))
+  }
   const updateSet=(exIndex:number,setIndex:number,field :'weight'|'reps',value:string)=>{
     setSessionExercises((prev)=>
       prev.map((ex,i)=>
@@ -42,7 +47,7 @@ const workout_tester = () => {
           ...exs.map((ex)=>({exercise:ex,sets:[]}))])}>
         </ExerciseSelector>
       </Modal>
-      <ExerciseLoggingCard exerciseList={sessionExercises} onUpdateSet={updateSet} onRemoveExercise={removeExercise} onAddSet={addSet}></ExerciseLoggingCard>
+      <ExerciseLoggingCard onRemoveSet={removeSet} exerciseList={sessionExercises} onUpdateSet={updateSet} onRemoveExercise={removeExercise} onAddSet={addSet}></ExerciseLoggingCard>
       <Card style={{backgroundColor:colors.accent,alignItems:'center'}}>
         <Pressable onPress={()=>setExercisesSelectorOpen(true)}>
           <Text style={{fontFamily:fonts.bodyBold,color:colors.text,fontSize:16}}>Select exercises</Text>
