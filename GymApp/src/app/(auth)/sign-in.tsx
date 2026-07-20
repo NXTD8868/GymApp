@@ -18,7 +18,6 @@ export default function SignInPage() {
         email,
         password,
         rememberMe: false,
-        callbackURL: "/",
       },{
         onError: (ctx) => {
           console.log(ctx.error.message);
@@ -26,6 +25,7 @@ export default function SignInPage() {
         onSuccess: (ctx) => {
           console.log("success");
           console.log(ctx.data)
+          router.replace("/")      // navigate here instead
         },
       })
   }
