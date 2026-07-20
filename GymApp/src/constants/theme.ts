@@ -7,6 +7,7 @@
     text:            "#FAFAFA",
     textMuted:       "#9A9AA2",
     textDim:         "#54545C",
+    danger:          "#F0384B", 
   };
 
   export const fonts = {
