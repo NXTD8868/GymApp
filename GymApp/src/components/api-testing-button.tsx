@@ -1,9 +1,10 @@
-import { colors, spacing } from '@/constants/theme';
+import { colors, fonts, spacing } from '@/constants/theme';
 import { Pressable, Text, View } from 'react-native';
 type APITestingButtonProps = {
-  APIfunc:  () => Promise<unknown> |void      
+  APIfunc:  () => Promise<unknown> |void,
+  name :string    
 };
-export default function APITestingButton({APIfunc}:APITestingButtonProps) {
+export default function APITestingButton({APIfunc,name}:APITestingButtonProps) {
     const handlePress = async() => {
     console.log('clicked');
     const res = await APIfunc();
@@ -12,7 +13,7 @@ export default function APITestingButton({APIfunc}:APITestingButtonProps) {
   return (
     <View style={{backgroundColor:colors.accent, }}>
         <Pressable onPress={()=>handlePress()}>
-            <Text style={{fontSize:spacing.lg}}>api-testing-button</Text>
+            <Text style={{fontSize:spacing.lg,fontFamily:fonts.heading,alignSelf:'center'}}>{name}</Text>
         </Pressable>
     </View>
   )
