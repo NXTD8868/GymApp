@@ -13,9 +13,12 @@ import { useRef } from 'react'
 import { ConfirmDialog } from '@/components/confirmation-dialog-popup'
 import { useWorkoutSession } from '@/context/workout-session-context'
 import { useRouter } from 'expo-router'
+import { workoutObject } from '@/types'
+import { API_BASE_URL } from '../../../config'
+import { authedFetch } from '@/lib/authenticated-fetch'
 const workout_tester = () => {
   const {
-    isActive,
+    isActive, startedAt,
     sessionName, setSessionName,
     elapsed,
     sessionExercises,
@@ -26,6 +29,7 @@ const workout_tester = () => {
   const nameInputRef = useRef<TextInput>(null)
   const [pendingSet, setPendingSet] = useState<{ exIndex: number; setIndex: number } | null>(null)
   const [cancelSessionDialogVisible,setCancelSessionDialogVisible] = useState<boolean>(false)
+  const [finishSessionDialogVisible,setFinishSessionDialogVisible] = useState<boolean>(false)
   const requestRemoveSet = (exIndex: number, setIndex: number) => {
     setPendingSet({ exIndex, setIndex })
   }
@@ -35,6 +39,40 @@ const workout_tester = () => {
     return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`
   }
   const router =useRouter()
+  // in workout-session-context
+  const finishWorkout = async () => {
+    const candidate = {
+      sessionName: sessionName,
+      startedAt: new Date(startedAt!),
+      endedAt: new Date(),
+      exercises: sessionExercises
+        .filter((ex) => ex.sets.length > 0)
+        .map((ex) => ({
+          exerciseKey: ex.exercise.key,
+          sets: ex.sets.map((s) => ({ weight: Number(s.weight), reps: Number(s.reps) }))
+          .filter((s) => !Number.isNaN(s.weight) && !Number.isNaN(s.reps) && s.reps > 0),
+        })).filter((ex) => ex.sets.length > 0),
+    }
+    const result = workoutObject.safeParse(candidate)
+    if (!result.success) 
+      return { ok: false, errors: result.error.issues }
+    try {
+      const res = await authedFetch(`/workouts/`,{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(result.data), 
+        });
+      if (!res.ok) {
+        return { ok: false as const, errors: `Server error: ${res.status}` }
+      }
+      endSession()                      
+      return { ok: true as const }
+    } catch (err) {
+      return { ok: false as const, errors: 'Network error' }
+    }
+  }
   return (
     <SafeAreaView edges={['top']} style={{backgroundColor:colors.background,flex:1,padding:spacing.md,gap:spacing.md}}>
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: spacing.md, paddingVertical: spacing.sm }}>
@@ -48,7 +86,7 @@ const workout_tester = () => {
         <Pressable style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => { if(!isActive) startSession()}}>
           <Text style={{ fontFamily: fonts.headingHeavy, fontSize: 16, color: !isActive?colors.accent:colors.textMuted }}>START</Text>
         </Pressable>
-        <Pressable style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => {if (isActive) endSession()}}>
+        <Pressable style={{ flex: 1, alignItems: 'flex-end' }} onPress={() => {if (isActive) setFinishSessionDialogVisible(true)}}>
           <Text style={{ fontFamily: fonts.headingHeavy, fontSize: 16, color:isActive?colors.accent:colors.textMuted }}>FINISH</Text>
         </Pressable>
       </View>
@@ -86,11 +124,28 @@ const workout_tester = () => {
       </Card>
 
       <ConfirmDialog
+      visible={finishSessionDialogVisible}
+      icon='checkmark' title="Finish workout?"
+      description="This workout session will be saved"
+      confirmLabel="Finish" cancelLabel="Cancel"
+      destructive
+      onConfirm={async () => {
+        const res =await finishWorkout()
+        setFinishSessionDialogVisible(false)
+          if (res.ok) {
+          router.replace('/')                   
+          } else {
+            Alert.alert('Save failed', 'Your workout could not be saved. Please try again.')
+      }
+      }}
+      onCancel={() => setFinishSessionDialogVisible(false)}
+      />
+      <ConfirmDialog
       visible={pendingSet !== null}
       icon="trash" title="Remove set?"
       description="This set will be removed from the exercise."
       confirmLabel="Remove" cancelLabel="Cancel"
-      destructive
+      destructive={false}
       onConfirm={() => {
         if (pendingSet) removeSet(pendingSet.exIndex, pendingSet.setIndex)
         setPendingSet(null)

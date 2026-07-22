@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
+import { Redirect } from 'expo-router';
 export default function SignInPage() {
   const [name,setname]= useState('')
   const [email,setEmail]= useState('')
@@ -36,18 +37,20 @@ export default function SignInPage() {
             password, // user password -> min 8 characters by default
             name, // user display name
         });
+    console.log('signup data:', data)   
         if (error) {
           console.log('error')
           return
         }
-        console.log('asdfa')
-        router.replace("/");
-        console.log('success')
   }
   
   const onForgotPassword =():void =>{
     console.log('forgot password');
   }
+  const { data: session } = authClient.useSession()
+  if (session) {
+    return <Redirect href="/" />
+  }  
   return (
     <View style={{backgroundColor:colors.background,flex:1,justifyContent:'flex-start',padding:spacing.md}}>
       <OrangeHue/>

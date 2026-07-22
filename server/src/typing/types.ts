@@ -1,6 +1,7 @@
 import * as z from "zod"
 import { ObjectId } from "mongodb";
 const workoutInputSchema = z.object({
+    sessionName: z.string().min(1),          
     startedAt: z.coerce.date(),
     endedAt: z.coerce.date(),
     exercises: z.array(z.object({

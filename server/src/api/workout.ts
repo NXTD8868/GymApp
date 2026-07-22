@@ -18,7 +18,6 @@ router.post('/', async (req: Request, res: Response) => {
       userId: req.user!.id,   
       ...parsed.data,       
     });
-
     return res.status(201).json({ res: result.insertedId });
   } catch (err) {
     console.error(err);

@@ -7,6 +7,7 @@ import { Text, View,TextInput, Pressable, FlatList } from 'react-native'
 import { Exercise } from '@/types'
 import { SectionList } from 'react-native'
 import { API_BASE_URL } from '../../config'
+import { authedFetch } from '@/lib/authenticated-fetch'
 const ExerciseSelector = ({onSelect,onClose} :{
   onSelect:(ex:Exercise[])=>void
   onClose: ()=> void
@@ -19,10 +20,7 @@ const ExerciseSelector = ({onSelect,onClose} :{
   const fetchExerciseCatalog = async ()=>{
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE_URL}/workouts/exercises`, {
-      credentials: 'include',
-      method:'get'
-      });
+      const res = await authedFetch(`/workouts/exercises`,{method:'GET'})
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       
       const data = await res.json();

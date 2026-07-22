@@ -1,5 +1,6 @@
 import * as z from "zod"
 const workoutObject = z.object({
+    sessionName: z.string().min(1),
     startedAt: z.coerce.date(),
     endedAt: z.coerce.date(),
     exercises: z.array(z.object({
@@ -10,7 +11,6 @@ const workoutObject = z.object({
         })).min(1)
     })).min(1)
 })
-
 type Workout = z.infer<typeof workoutObject>
 
 export {workoutObject}
