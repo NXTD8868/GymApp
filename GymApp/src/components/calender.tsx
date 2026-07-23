@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import React, { useEffect } from 'react'
 import { Card } from './card'
 import { useState } from 'react'
 import { colors, spacing } from '@/constants/theme'
 import { Dimensions } from 'react-native'
-const Calendar = () => {
-    const [viewDate, setViewDate] = useState(new Date())
-
+interface CalendarProp {
+    viewDate:Date,
+    workoutDays :Set<number>,
+    onDayPress?:(day:number)=>void
+}
+const Calendar = ({viewDate,workoutDays,onDayPress}:CalendarProp) => {
     function getMonthDays(year: number, month: number) {
         const firstDay = new Date(year, month, 1)
         const daysInMonth = new Date(year, month + 1, 0).getDate()
@@ -20,7 +23,6 @@ const Calendar = () => {
     }
     const dayheader:string[]=['M','T','W','T','F','S','S']
     const cells = getMonthDays(viewDate.getFullYear(), viewDate.getMonth())
-    const workoutDays = new Set([1, 5, 12, 20, 23]) 
     const hasWorkout = (day: number) => workoutDays.has(day)
     const screenH = Dimensions.get('window').height
     const calendarH = screenH / 3        
@@ -41,7 +43,9 @@ const Calendar = () => {
                     backgroundColor: hasWorkout(date) ? colors.accent : 'transparent',
                     alignItems: 'center', justifyContent: 'center',
                     }}>
-                    <Text style={{ color: hasWorkout(date) ? colors.background : colors.text }}>{date}</Text>
+                    <Pressable onPress={() => hasWorkout(date) && onDayPress?.(date)}>
+                        <Text style={{ color: hasWorkout(date) ? colors.background : colors.text }}>{date}</Text>
+                    </Pressable>
                     </View>)}
                 </View>
             ))}

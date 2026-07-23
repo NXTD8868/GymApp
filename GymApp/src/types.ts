@@ -28,3 +28,9 @@ export type {Exercise}
 type DraftSet = { weight: string; reps: string }       
 type DraftExercise = { exercise: Exercise; sets: DraftSet[] }
 export type {DraftExercise,DraftSet}
+export const workoutDocument = workoutObject.extend({
+    _id :z.string(),
+    userId: z.string()
+})
+type WorkoutDocument = z.infer<typeof workoutDocument>
+export type {WorkoutDocument}

@@ -24,6 +24,23 @@ router.post('/', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Failed to save workout' });
   }
 });
+router.get('/history', async (req: Request, res: Response) => {
+  const userId = req.user?.id
+  if (!userId) return res.status(401).json({ error: 'Unauthenticated' });
+  const { year, month } = req.query 
+  const filter: any = { userId }
+  if (year && month) {
+    const y = Number(year)
+    const m = Number(month)                    
+    const start = new Date(Date.UTC(y, m - 1, 1))      
+    const end   = new Date(Date.UTC(y, m, 1))           
+    filter.startedAt = { $gte: start, $lt: end }
+  }
+
+  const workoutHistory = await workouts.find(filter).sort({ startedAt: -1 }).toArray()
+  console.log(workoutHistory)
+  return res.status(200).json({res:workoutHistory})
+ });
 
 router.get('/exercises', async (req: Request, res: Response) => { 
   try {
