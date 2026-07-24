@@ -27,7 +27,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/history', async (req: Request, res: Response) => {
   const userId = req.user?.id
   if (!userId) return res.status(401).json({ error: 'Unauthenticated' });
-  const { year, month } = req.query 
+  const { year, month,limit } = req.query 
   const filter: any = { userId }
   if (year && month) {
     const y = Number(year)
@@ -36,9 +36,10 @@ router.get('/history', async (req: Request, res: Response) => {
     const end   = new Date(Date.UTC(y, m, 1))           
     filter.startedAt = { $gte: start, $lt: end }
   }
+  let query = workouts.find(filter).sort({ startedAt: -1 })
+  if (limit) query = query.limit(Number(limit))
 
   const workoutHistory = await workouts.find(filter).sort({ startedAt: -1 }).toArray()
-  console.log(workoutHistory)
   return res.status(200).json({res:workoutHistory})
  });
 

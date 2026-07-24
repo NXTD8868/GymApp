@@ -1,5 +1,6 @@
   export const colors = {
     accent:          "#FF5A1F",
+    accentSoft:  "rgba(255,90,31,0.25)",
     accentSecondary: "#FF9A3D",
     background:      "#0B0B0D",
     surface:         "#141418",

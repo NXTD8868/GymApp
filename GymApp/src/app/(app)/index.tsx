@@ -79,7 +79,7 @@ const Index = () => {
           <Text style={{ color:  colors.text, fontFamily: fonts.headingHeavy, fontSize: 28 }}>Push Day</Text>
           <Card onPress={()=>{
             if (!isActive) startSession()
-              router.push('/workout_tester')
+              router.push('/Live_Log')
             }} 
             style={{backgroundColor:colors.background,alignItems:'center',flexDirection:'row',gap:spacing.md}}>
             <Ionicons

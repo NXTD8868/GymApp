@@ -2,24 +2,16 @@ import { View, Text, FlatList, Pressable, TextInput } from 'react-native'
 import React from 'react'
 import { colors, fonts, spacing } from '@/constants/theme'
 import { Card } from '@/components/card'
-import { DraftExercise, Exercise } from '@/types'
-import { Ionicons } from '@expo/vector-icons'
-import Index from '@/app/(app)'
 import type { WorkoutDocument } from '@/types'
 interface SessionCardProp {
-  workoutDocument:WorkoutDocument,
-  onClose : ()=>void
-}
-const SessionCard = ({workoutDocument,onClose}:SessionCardProp)=> {
+  workoutDocument:WorkoutDocument}
+const SessionCard = ({workoutDocument}:SessionCardProp)=> {
   return (
     <View style={{flex:1,backgroundColor:colors.surface}}>
       <View style={{flexDirection:'row',justifyContent: 'space-between', alignItems: 'flex-end'}}>
         <Text style={{fontFamily:fonts.headingHeavy,color:colors.text,fontSize:30}}>
           {workoutDocument.sessionName}
         </Text>
-        <Card onPress={()=>onClose()} style={{alignSelf:'flex-end'}}>
-            <Ionicons name='close' size={24} color={colors.textMuted}></Ionicons>
-        </Card>
       </View>
 
       <FlatList

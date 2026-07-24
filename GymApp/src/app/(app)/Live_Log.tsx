@@ -16,7 +16,7 @@ import { useRouter } from 'expo-router'
 import { workoutObject } from '@/types'
 import { API_BASE_URL } from '../../../config'
 import { authedFetch } from '@/lib/authenticated-fetch'
-const workout_tester = () => {
+const Live_Log = () => {
   const {
     isActive, startedAt,
     sessionName, setSessionName,
@@ -39,7 +39,6 @@ const workout_tester = () => {
     return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`
   }
   const router =useRouter()
-  // in workout-session-context
   const finishWorkout = async () => {
     const candidate = {
       sessionName: sessionName,
@@ -117,8 +116,8 @@ const workout_tester = () => {
         </ExerciseSelector>
       </Modal>
       <ExerciseLoggingCard onRemoveSet={requestRemoveSet} exerciseList={sessionExercises} onUpdateSet={updateSet} onRemoveExercise={removeExercise} onAddSet={addSet}></ExerciseLoggingCard>
-      <Card style={{backgroundColor:colors.accent,alignItems:'center'}}>
-        <Pressable onPress={()=>setExercisesSelectorOpen(true)}>
+      <Card style={{backgroundColor:isActive?colors.accent:colors.surfaceRaised,alignItems:'center'}}>
+        <Pressable onPress={()=>{if (isActive) setExercisesSelectorOpen(true);}}>
           <Text style={{fontFamily:fonts.bodyBold,color:colors.text,fontSize:16}}>Select exercises</Text>
         </Pressable>
       </Card>
@@ -165,11 +164,8 @@ const workout_tester = () => {
       }}
       onCancel={() =>setCancelSessionDialogVisible(false)}
       />
-      <Card onPress={()=>console.log(elapsed,sessionName,sessionExercises)} style={{backgroundColor:colors.accent}}>
-          <Text style={{color:colors.text,fontSize:20}}>click to test</Text>
-      </Card>
     </SafeAreaView>
   )
 }
 
-export default workout_tester
+export default Live_Log
